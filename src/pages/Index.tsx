@@ -1,4 +1,12 @@
-import { useEffect, useRef } from "react";
+import { useState, useEffect, useRef } from 'react';
+import { createClient } from '@supabase/supabase-js';
+
+const supabase = createClient(
+  import.meta.env.VITE_SUPABASE_URL,
+  import.meta.env.VITE_SUPABASE_ANON_KEY
+);
+
+type FormState = 'idle' | 'submitting' | 'success' | 'error';
 
 export default function Index() {
   const sectionsRef = useRef<HTMLDivElement[]>([]);
@@ -8,7 +16,7 @@ export default function Index() {
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            entry.target.classList.add("visible");
+            entry.target.classList.add('visible');
           }
         });
       },
@@ -20,6 +28,50 @@ export default function Index() {
 
   const addRef = (el: HTMLDivElement | null) => {
     if (el && !sectionsRef.current.includes(el)) sectionsRef.current.push(el);
+  };
+
+  // Form state
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [establishment, setEstablishment] = useState('');
+  const [notes, setNotes] = useState('');
+  const [formState, setFormState] = useState<FormState>('idle');
+  const [errorMsg, setErrorMsg] = useState('');
+
+  const isValidEmail = (val: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val);
+
+  const handleSubmit = async () => {
+    if (!name.trim()) {
+      setErrorMsg('Please enter your name.');
+      setFormState('error');
+      return;
+    }
+    if (!isValidEmail(email)) {
+      setErrorMsg('Please enter a valid email address.');
+      setFormState('error');
+      return;
+    }
+
+    setFormState('submitting');
+    setErrorMsg('');
+
+    const { error } = await supabase
+      .from('interest_submissions')
+      .insert({
+        name: name.trim(),
+        email: email.trim().toLowerCase(),
+        role: establishment.trim() || null,
+        message: notes.trim() || null,
+      });
+
+    if (error) {
+      console.error(error);
+      setErrorMsg('Something went wrong. Please try again.');
+      setFormState('error');
+      return;
+    }
+
+    setFormState('success');
   };
 
   return (
@@ -47,7 +99,6 @@ export default function Index() {
           overflow-x: hidden;
         }
 
-        /* TEXTURE OVERLAY */
         body::before {
           content: '';
           position: fixed;
@@ -58,7 +109,6 @@ export default function Index() {
           opacity: 0.4;
         }
 
-        /* WATERMARK */
         .watermark {
           position: fixed;
           bottom: -60px;
@@ -72,7 +122,6 @@ export default function Index() {
           line-height: 1;
         }
 
-        /* NAV */
         nav {
           position: fixed;
           top: 0;
@@ -129,7 +178,6 @@ export default function Index() {
           border-radius: 999px;
         }
 
-        /* HERO */
         .hero {
           min-height: 100vh;
           display: flex;
@@ -230,7 +278,6 @@ export default function Index() {
           transform: translateY(-1px);
         }
 
-        /* DIVIDER */
         .section-divider {
           display: flex;
           align-items: center;
@@ -249,7 +296,6 @@ export default function Index() {
           flex-shrink: 0;
         }
 
-        /* SECTIONS */
         .section {
           padding: 80px 48px;
           position: relative;
@@ -293,7 +339,6 @@ export default function Index() {
           max-width: 600px;
         }
 
-        /* AXIS CARDS */
         .axis-grid {
           display: grid;
           grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
@@ -335,7 +380,6 @@ export default function Index() {
           line-height: 1.5;
         }
 
-        /* PENTAGON VISUAL */
         .pentagon-section {
           display: grid;
           grid-template-columns: 1fr 1fr;
@@ -357,10 +401,8 @@ export default function Index() {
           align-items: center;
         }
 
-        /* RADAR SVG */
         .radar-svg { width: 280px; height: 280px; }
 
-        /* FEATURE LIST */
         .feature-list {
           list-style: none;
           margin-top: 28px;
@@ -387,7 +429,6 @@ export default function Index() {
           margin-top: 8px;
         }
 
-        /* QUOTE BLOCK */
         .quote-block {
           border-left: 3px solid var(--accent);
           padding: 20px 28px;
@@ -409,6 +450,129 @@ export default function Index() {
           font-size: 13px;
           opacity: 0.6;
           letter-spacing: 0.05em;
+        }
+
+        /* FORM SECTION */
+        .form-section {
+          background: rgba(139, 26, 26, 0.04);
+          border-top: 1px solid rgba(139, 26, 26, 0.15);
+          border-bottom: 1px solid rgba(139, 26, 26, 0.15);
+          padding: 80px 48px;
+          position: relative;
+          z-index: 1;
+        }
+
+        .form-inner {
+          max-width: 520px;
+          margin: 0 auto;
+        }
+
+        .form-field {
+          margin-bottom: 20px;
+          display: flex;
+          flex-direction: column;
+          gap: 6px;
+        }
+
+        .form-label {
+          font-family: 'Mate SC', serif;
+          font-size: 13px;
+          color: var(--red);
+          letter-spacing: 0.03em;
+        }
+
+        .form-optional {
+          color: rgb(160, 120, 90);
+          font-size: 12px;
+          font-family: 'Mate', serif;
+          font-weight: normal;
+        }
+
+        .form-input {
+          width: 100%;
+          padding: 10px 12px;
+          border: 1px solid rgb(139, 26, 26);
+          border-radius: 4px;
+          background-color: rgb(232, 213, 181);
+          color: rgb(60, 30, 20);
+          font-family: 'Mate', serif;
+          font-size: 14px;
+          outline: none;
+          box-sizing: border-box;
+          transition: border-color 0.2s;
+        }
+
+        .form-input:focus {
+          border-color: rgb(238, 139, 96);
+        }
+
+        .form-textarea {
+          min-height: 90px;
+          resize: vertical;
+        }
+
+        .form-submit {
+          width: 100%;
+          padding: 13px;
+          background-color: rgb(139, 26, 26);
+          color: rgb(232, 213, 181);
+          border: none;
+          border-radius: 4px;
+          font-family: 'Mate SC', serif;
+          font-size: 15px;
+          letter-spacing: 0.05em;
+          margin-top: 8px;
+          cursor: pointer;
+          transition: opacity 0.2s, background 0.2s;
+        }
+
+        .form-submit:hover:not(:disabled) {
+          background: rgb(110, 20, 20);
+        }
+
+        .form-submit:disabled {
+          opacity: 0.6;
+          cursor: not-allowed;
+        }
+
+        .form-error {
+          color: rgb(180, 40, 40);
+          font-size: 13px;
+          margin-bottom: 8px;
+          font-family: 'Mate', serif;
+        }
+
+        .form-consent {
+          font-size: 11px;
+          color: rgb(140, 100, 70);
+          text-align: center;
+          margin-top: 12px;
+          line-height: 1.5;
+          font-family: 'Mate', serif;
+        }
+
+        .form-success {
+          text-align: center;
+          padding: 40px 0;
+        }
+
+        .form-success-icon {
+          font-size: 36px;
+          margin-bottom: 12px;
+        }
+
+        .form-success-title {
+          font-family: 'Mate SC', serif;
+          color: var(--red);
+          font-size: 22px;
+          font-weight: 400;
+          margin-bottom: 10px;
+        }
+
+        .form-success-text {
+          color: rgb(100, 60, 40);
+          font-size: 15px;
+          line-height: 1.6;
         }
 
         /* CTA SECTION */
@@ -474,7 +638,6 @@ export default function Index() {
           transform: translateY(-1px);
         }
 
-        /* FOOTER */
         footer {
           background: rgb(50, 15, 15);
           padding: 40px 48px;
@@ -483,7 +646,7 @@ export default function Index() {
           display: flex;
           align-items: center;
           justify-content: space-between;
-          flex-wrap: gap;
+          flex-wrap: wrap;
           gap: 20px;
         }
 
@@ -524,10 +687,10 @@ export default function Index() {
         @media (max-width: 600px) {
           footer { flex-direction: column; align-items: flex-start; }
           .cta-section { padding: 60px 24px; }
+          .form-section { padding: 60px 24px; }
         }
       `}</style>
 
-      {/* WATERMARK */}
       <div className="watermark">MT</div>
 
       {/* NAV */}
@@ -545,7 +708,7 @@ export default function Index() {
         <ul className="nav-links">
           <li><a href="#what-it-is">What It Is</a></li>
           <li><a href="#how-it-works">How It Works</a></li>
-          <li><a href="#get-it">Get It</a></li>
+          <li><a href="#get-it">Get Early Access</a></li>
         </ul>
         <span className="beta-badge">BETA</span>
       </nav>
@@ -630,7 +793,6 @@ export default function Index() {
 
           <div className="fade-in pentagon-wrap" ref={addRef}>
             <svg className="radar-svg" viewBox="0 0 280 280" xmlns="http://www.w3.org/2000/svg">
-              {/* Grid pentagons */}
               {[0.25, 0.5, 0.75, 1].map((scale, i) => {
                 const pts = [
                   [140, 140 - 110 * scale],
@@ -641,26 +803,22 @@ export default function Index() {
                 ].map(p => p.join(",")).join(" ");
                 return <polygon key={i} points={pts} fill="none" stroke="rgba(139,26,26,0.12)" strokeWidth="1"/>;
               })}
-              {/* Axis lines */}
               {[
                 [140, 30], [244.6, 105.9], [204.7, 229.1], [75.3, 229.1], [35.4, 105.9]
               ].map(([x, y], i) => (
                 <line key={i} x1="140" y1="140" x2={x} y2={y} stroke="rgba(139,26,26,0.15)" strokeWidth="1"/>
               ))}
-              {/* Data polygon - example Negroni profile */}
               <polygon
                 points="140,68 213,112 188,208 92,208 67,112"
                 fill="rgba(139,26,26,0.12)"
                 stroke="rgb(139,26,26)"
                 strokeWidth="1.5"
               />
-              {/* Data points */}
               {[
                 [140, 68], [213, 112], [188, 208], [92, 208], [67, 112]
               ].map(([x, y], i) => (
                 <circle key={i} cx={x} cy={y} r="4" fill="rgb(238,139,96)" stroke="rgb(139,26,26)" strokeWidth="1.5"/>
               ))}
-              {/* Labels */}
               <text x="140" y="22" textAnchor="middle" fontFamily="Mate SC, serif" fontSize="11" fill="rgb(139,26,26)" opacity="0.7">Sweet</text>
               <text x="252" y="108" textAnchor="start" fontFamily="Mate SC, serif" fontSize="11" fill="rgb(139,26,26)" opacity="0.7">Sour</text>
               <text x="210" y="245" textAnchor="middle" fontFamily="Mate SC, serif" fontSize="11" fill="rgb(139,26,26)" opacity="0.7">Bitter</text>
@@ -687,21 +845,102 @@ export default function Index() {
             MyTinni is live on Android. We're working with a closed group of industry professionals before wider release. iOS coming soon.
           </p>
           <ul className="feature-list" style={{ marginTop: 28 }}>
-            <li><span className="feature-bullet"/><span>Android APK available now via Google Play (closed beta)</span></li>
+            <li><span className="feature-bullet"/><span>Android available now via Google Play (closed beta)</span></li>
             <li><span className="feature-bullet"/><span>iOS — coming after Apple Developer approval</span></li>
-            <li><span className="feature-bullet"/><span>Interest list open — contact us to be considered</span></li>
+            <li><span className="feature-bullet"/><span>Interest list open — fill in the form below to be considered</span></li>
           </ul>
-          <div style={{ marginTop: 36, display: "flex", gap: 16, flexWrap: "wrap" }}>
-            <a href="mailto:team@mytinni.com" className="btn-primary">Request Access</a>
-          </div>
         </div>
       </section>
+
+      {/* FORM */}
+      <div className="form-section">
+        <div className="form-inner">
+          <p className="section-label" style={{ textAlign: 'center', marginBottom: 8 }}>Early Access</p>
+          <h2 className="section-title" style={{ textAlign: 'center', marginBottom: 12 }}>Request to Join the Beta</h2>
+          <p style={{ textAlign: 'center', fontSize: 15, lineHeight: 1.7, opacity: 0.75, marginBottom: 36 }}>
+            We're inviting a select group of industry professionals. Sit tight — you'll hear from us within 24 hours.
+          </p>
+
+          {formState === 'success' ? (
+            <div className="form-success">
+              <p className="form-success-icon">🍸</p>
+              <h3 className="form-success-title">You're on the list.</h3>
+              <p className="form-success-text">Sit tight — you'll receive a download link within 24 hours.</p>
+            </div>
+          ) : (
+            <>
+              <div className="form-field">
+                <label className="form-label">Name <span style={{ color: 'rgb(139,26,26)' }}>*</span></label>
+                <input
+                  type="text"
+                  value={name}
+                  onChange={e => setName(e.target.value)}
+                  placeholder="Your full name"
+                  className="form-input"
+                  disabled={formState === 'submitting'}
+                />
+              </div>
+
+              <div className="form-field">
+                <label className="form-label">Email <span style={{ color: 'rgb(139,26,26)' }}>*</span></label>
+                <input
+                  type="email"
+                  value={email}
+                  onChange={e => setEmail(e.target.value)}
+                  placeholder="you@example.com"
+                  className="form-input"
+                  disabled={formState === 'submitting'}
+                />
+              </div>
+
+              <div className="form-field">
+                <label className="form-label">Establishment / Role <span className="form-optional">(optional)</span></label>
+                <input
+                  type="text"
+                  value={establishment}
+                  onChange={e => setEstablishment(e.target.value)}
+                  placeholder="Bar name, hotel, freelance..."
+                  className="form-input"
+                  disabled={formState === 'submitting'}
+                />
+              </div>
+
+              <div className="form-field">
+                <label className="form-label">Notes <span className="form-optional">(optional)</span></label>
+                <textarea
+                  value={notes}
+                  onChange={e => setNotes(e.target.value)}
+                  placeholder="Tell us what you hope to see..."
+                  className="form-input form-textarea"
+                  disabled={formState === 'submitting'}
+                />
+              </div>
+
+              {formState === 'error' && (
+                <p className="form-error">{errorMsg}</p>
+              )}
+
+              <button
+                onClick={handleSubmit}
+                disabled={formState === 'submitting'}
+                className="form-submit"
+              >
+                {formState === 'submitting' ? 'Sending...' : 'Request Access'}
+              </button>
+
+              <p className="form-consent">
+                By submitting, you agree to us storing your details to contact you about the MyTinni beta.
+              </p>
+            </>
+          )}
+        </div>
+      </div>
 
       {/* CTA */}
       <div className="cta-section">
         <h2>Built by bartenders. Engineered for precision.</h2>
         <p>Twenty years of professional taste experience encoded into an algorithm. MyTinni is not a guide — it's a thinking tool.</p>
-        <a href="mailto:team@mytinni.com" className="btn-cream">Get in Touch</a>
+        <a href="#get-it" className="btn-cream">Get Early Access</a>
       </div>
 
       {/* FOOTER */}
@@ -710,7 +949,7 @@ export default function Index() {
         <ul className="footer-links">
           <li><a href="/privacy">Privacy Policy</a></li>
           <li><a href="/delete-account">Delete Account</a></li>
-          <li><a href="mailto:team@mytinni.com">Contact</a></li>
+          <li><a href="mailto:hello@hello.mytinni.com">Contact</a></li>
         </ul>
         <p className="footer-copy">© {new Date().getFullYear()} MyTinni. All rights reserved. Nascent AGI Solutions.</p>
       </footer>
