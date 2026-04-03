@@ -3,6 +3,9 @@ import Index from './pages/Index'
 import PrivacyPolicy from './pages/PrivacyPolicy'
 import DeleteAccount from './pages/DeleteAccount'
 import NotFound from './pages/NotFound'
+import Beta from './pages/Beta'
+// inside <Routes>:
+<Route path="/beta" element={<Beta />} />
 
 function App() {
   return (
