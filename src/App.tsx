@@ -3,6 +3,7 @@ import Index from './pages/Index'
 import PrivacyPolicy from './pages/PrivacyPolicy'
 import DeleteAccount from './pages/DeleteAccount'
 import NotFound from './pages/NotFound'
+import Support from './pages/Support'
 
 function App() {
   return (
@@ -12,6 +13,7 @@ function App() {
         <Route path="/privacy" element={<PrivacyPolicy />} />
         <Route path="/delete-account" element={<DeleteAccount />} />
         <Route path="*" element={<NotFound />} />
+        <Route path="/support" element={<Support />} />
       </Routes>
     </BrowserRouter>
   )
