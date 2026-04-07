@@ -948,6 +948,7 @@ export default function Index() {
         <span className="footer-logo">MyTinni</span>
         <ul className="footer-links">
           <li><a href="/privacy">Privacy Policy</a></li>
+          <li><a href="/support">Support</a></li>
           <li><a href="/delete-account">Delete Account</a></li>
           <li><a href="mailto:hello@hello.mytinni.com">Contact</a></li>
         </ul>
