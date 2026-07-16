@@ -434,7 +434,7 @@ export default function Index() {
         <ul className="nav-links">
           <li><a href="#what-it-is">What It Is</a></li>
           <li><a href="#how-it-works">How It Works</a></li>
-          <li><a href="#get-it">Get Early Access</a></li>
+          <li><a href="#get-it">Get Involved</a></li>
         </ul>
         <span className="beta-badge">BETA</span>
       </nav>
@@ -582,16 +582,16 @@ export default function Index() {
       <div className="form-section">
         <div className="form-inner">
           <p className="section-label" style={{ textAlign: 'center', marginBottom: 8 }}>Early Access</p>
-          <h2 className="section-title" style={{ textAlign: 'center', marginBottom: 12 }}>Request to Join the Beta</h2>
+          <h2 className="section-title" style={{ textAlign: 'center', marginBottom: 12 }}>Join Us</h2>
           <p style={{ textAlign: 'center', fontSize: 15, lineHeight: 1.7, opacity: 0.75, marginBottom: 36 }}>
-            We're inviting a select group of industry professionals. Sit tight — you'll hear from us within 24 hours.
+            If you are interested in our project & want to get involved tell us about yourself, we are constantly evolving and would love to hear from you.
           </p>
 
           {formState === 'success' ? (
             <div className="form-success">
               <p className="form-success-icon">🍸</p>
-              <h3 className="form-success-title">You're on the list.</h3>
-              <p className="form-success-text">Sit tight — you'll receive a download link within 24 hours.</p>
+              <h3 className="form-success-title">Message Recieved!.</h3>
+              <p className="form-success-text">Sit tight — we'll get in touch shortly.</p>
             </div>
           ) : (
             <>
@@ -625,7 +625,7 @@ export default function Index() {
                   type="text"
                   value={establishment}
                   onChange={e => setEstablishment(e.target.value)}
-                  placeholder="Bar name, hotel, freelance..."
+                  placeholder="Bar, Freelance, Investor..."
                   className="form-input"
                   disabled={formState === 'submitting'}
                 />
@@ -651,7 +651,7 @@ export default function Index() {
                 disabled={formState === 'submitting'}
                 className="form-submit"
               >
-                {formState === 'submitting' ? 'Sending...' : 'Request Access'}
+                {formState === 'submitting' ? 'Sending...' : 'Send'}
               </button>
 
               <p className="form-consent">
