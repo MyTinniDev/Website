@@ -210,6 +210,22 @@ footer {
   padding-top: 20px;
   border-top: 1px solid rgba(232, 213, 181, 0.08);
 }
+.nav-cta {
+  font-family: 'Mate SC', serif;
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  color: rgb(232, 213, 181);
+  background: var(--red);
+  padding: 8px 18px;
+  border-radius: 2px;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: background 0.2s, transform 0.15s;
+}
+.nav-cta:hover {
+  background: rgb(110, 20, 20);
+  transform: translateY(-1px);
+}
 
 @media (max-width: 768px) {
   nav { padding: 16px 24px; }
