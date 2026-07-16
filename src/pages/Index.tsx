@@ -452,7 +452,7 @@ export default function Index() {
           Every ingredient is a vector. Every cocktail, a composition. A private tasting ledger built for professionals who think in taste.
         </p>
         <div className="hero-buttons">
-          <a href="#get-it" className="btn-primary">Get Early Access</a>
+          <a href="#get-it" className="btn-primary">Get Involved</a>
           <a href="#how-it-works" className="btn-secondary">See How It Works</a>
         </div>
       </section>
@@ -581,7 +581,7 @@ export default function Index() {
       {/* FORM */}
       <div className="form-section">
         <div className="form-inner">
-          <p className="section-label" style={{ textAlign: 'center', marginBottom: 8 }}>Early Access</p>
+          <p className="section-label" style={{ textAlign: 'center', marginBottom: 8 }}>Get Involved</p>
           <h2 className="section-title" style={{ textAlign: 'center', marginBottom: 12 }}>Join Us</h2>
           <p style={{ textAlign: 'center', fontSize: 15, lineHeight: 1.7, opacity: 0.75, marginBottom: 36 }}>
             If you are interested in our project & want to get involved tell us about yourself, we are constantly evolving and would love to hear from you.
@@ -666,7 +666,7 @@ export default function Index() {
       <div className="cta-section">
         <h2>Built by bartenders. Engineered for precision.</h2>
         <p>Twenty years of professional taste experience encoded into an algorithm. MyTinni is not a guide — it's a thinking tool.</p>
-        <a href="#get-it" className="btn-cream">Get Early Access</a>
+        <a href="#get-it" className="btn-cream">Get Involved</a>
       </div>
 
       {/* FOOTER */}
