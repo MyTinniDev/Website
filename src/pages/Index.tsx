@@ -37,6 +37,7 @@ export default function Index() {
   const [notes, setNotes] = useState('');
   const [formState, setFormState] = useState<FormState>('idle');
   const [errorMsg, setErrorMsg] = useState('');
+  const [menuOpen, setMenuOpen] = useState(false);
 
   const isValidEmail = (val: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val);
 
@@ -431,12 +432,21 @@ export default function Index() {
           </svg>
           MyTinni
         </a>
-        <ul className="nav-links">
-          <li><a href="#what-it-is">What It Is</a></li>
-          <li><a href="#how-it-works">How It Works</a></li>
-          <li><a href="#get-it">Get Involved</a></li>
-          <li><a href="https://app.mytinni.com"></a>Try The App!</a></li>
+        <ul className={`nav-links ${menuOpen ? 'open' : ''}`}>
+          <li><a href="#what-it-is" onClick={() => setMenuOpen(false)}>What It Is</a></li>
+          <li><a href="#how-it-works" onClick={() => setMenuOpen(false)}>How It Works</a></li>
+          <li><a href="#get-it" onClick={() => setMenuOpen(false)}>Get Involved</a></li>
+          <li><a href="https://app.mytinni.com" onClick={() => setMenuOpen(false)}>Try The App!</a></li>
         </ul>
+        <button
+          className="nav-toggle"
+          onClick={() => setMenuOpen(prev => !prev)}
+          aria-label="Toggle navigation menu"
+        >
+          <div className="nav-toggle-line"/>
+          <div className="nav-toggle-line"/>
+          <div className="nav-toggle-line"/>
+        </button>
         <span className="beta-badge">BETA</span>
       </nav>
 
