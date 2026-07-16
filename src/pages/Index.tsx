@@ -571,8 +571,8 @@ export default function Index() {
             MyTinni is live on Android. We're working with a closed group of industry professionals before wider release. iOS coming soon.
           </p>
           <ul className="feature-list" style={{ marginTop: 28 }}>
-            <li><span className="feature-bullet"/><span>Android available now via Google Play (closed beta)</span></li>
-            <li><span className="feature-bullet"/><span>iOS — coming after Apple Developer approval</span></li>
+            <li><span className="feature-bullet"/><span>Android available now via Google Play (open beta)</span></li>
+            <li><span className="feature-bullet"/><span>iOS — coming soon</span></li>
             <li><span className="feature-bullet"/><span>Interest list open — fill in the form below to be considered</span></li>
           </ul>
         </div>
