@@ -678,7 +678,7 @@ export default function Index() {
           <li><a href="/delete-account">Delete Account</a></li>
           <li><a href="mailto:hello@hello.mytinni.com">Contact</a></li>
         </ul>
-        <p className="footer-copy">© {new Date().getFullYear()} MyTinni. All rights reserved. Nascent AGI Solutions.</p>
+        <p className="footer-copy">© {new Date().getFullYear()} MyTinni. All rights reserved.</p>
       </footer>
     </>
   );
