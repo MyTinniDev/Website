@@ -435,7 +435,7 @@ export default function Index() {
           <li><a href="#what-it-is">What It Is</a></li>
           <li><a href="#how-it-works">How It Works</a></li>
           <li><a href="#get-it">Get Involved</a></li>
-          <li><a href="https://app.mytinni.com" className="nav-cta">Try The App!</a></li>
+          <li><a href="https://app.mytinni.com"></a>Try The App!</a></li>
         </ul>
         <span className="beta-badge">BETA</span>
       </nav>
